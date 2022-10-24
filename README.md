@@ -14,6 +14,6 @@
 
 **Ссылка на проектную работу**
 
-* [Ссылка на проектную работу](https://agent1007.github.io/german-language-platform/)
+* [Ссылка на проектную работу](https://agent1007.github.io/event-tickets)
 
 

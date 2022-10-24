@@ -1,0 +1,24 @@
+.header__logo{
+    width: 240px;
+    height: 60px;
+    margin-top: 18px;
+    margin-left: 40px;
+    margin-bottom: 18px;
+}
+
+.header__logo:hover {
+    opacity: 0.6;
+    transition: 1s linear;
+}
+
+@media screen and (max-width: 767px) {    
+    .header__logo {
+        margin-left: 30px;
+    }
+}
+
+@media screen and (max-width: 530px) {    
+    .header__logo {
+        margin-left: 14px;
+    }
+}

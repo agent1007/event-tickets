@@ -266,7 +266,10 @@ function App() {
               disabled={buttonAgain}
             >Сбросить</button>
 
-
+            {/* вывод результатов */}
+            <div >
+              <div className="resultat">{resultat}</div>
+            </div>
 
 
           </div>

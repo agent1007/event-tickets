@@ -2,7 +2,7 @@ import Header from "../Header/header";
 import ChooseDirection from "../../utils/constans/ChooseDirection";
 import ChooseTimeBack from "../../utils/constans/ChooseTimeBack";
 import ChooseTimeThere from "../../utils/constans/ChooseTimeThere";
-import ChooseTickets from "../../utils/constans/ChooseTickets";
+import Button from "../Button/Button";
 import InputDirection from "../InputDirection/InputDirection";
 import InputTime from "../InputTime/InputTime";
 import InputTicket from "../InputTicket/InputTicket";
@@ -40,7 +40,8 @@ function App() {
   const [priceTickets, setPriceTickets] = useState(0)
   // value для input
   const [value, setValue] = useState(0);
-
+  // value для input
+  const [disabledButtonEnd, setDisabledButtonEnd] = useState(true);
 
   // Функция выбора направления
   function choiceDirection(id) {
@@ -48,6 +49,8 @@ function App() {
       item.id === id
     )
     setDirection(data)
+    setTimeThere([])
+    setTimeBack([])
   }
 
   // Функция выбора времени
@@ -60,6 +63,7 @@ function App() {
 
   // Событие на детский билет
   function handleChangeСhild(e) {
+    setDisabledButtonEnd(false)
     const { name, value } = e.target;
     setValueСhild(e.target.value)
     setTicketsCounterСhild(data => ({
@@ -69,6 +73,7 @@ function App() {
   }
   // Событие на взрослый билет
   const handleChangeAdult = (e) => {
+    setDisabledButtonEnd(false)
     const { name, value } = e.target;
     setValueAdult(e.target.value)
     setTicketsCounterAdult(data => ({
@@ -78,6 +83,7 @@ function App() {
   }
   // Событие на льготный билет
   const handleChangePreferential = (e) => {
+    setDisabledButtonEnd(false)
     const { name, value } = e.target;
     setValuePreferential(e.target.value)
     setTicketsCounterPreferential(data => ({
@@ -86,9 +92,9 @@ function App() {
     }))
   }
 
-
   // нажатие кнопки "Посчитать"
   const handleClickEnd = () => {
+    setDisabledButtonEnd(true)
     setTicketsCounter((Number(ticketsCounterAdult.number) || 0) + (Number(ticketsCounterСhild.number) || 0) + (Number(ticketsCounterPreferential.number) || 0))
     const data = (direction.id === 3) ?
       setPriceTickets((Number(ticketsCounterAdult.number) || 0) * 1200 + (Number(ticketsCounterСhild.number) || 0) * 600 + (Number(ticketsCounterPreferential.number) || 0) * 1000)
@@ -125,9 +131,6 @@ function App() {
   const timeThereEnd = getTimeFromMins(Number(timeThere.hour) * 60 + Number(timeThere.minutes))
   const timeBackEnd = getTimeFromMins(Number(timeBack.hour) * 60 + Number(timeBack.minutes))
 
-
-
-
   // Вывод результата после нажатия кнопки "Посчитать"
   const outputResult = useCallback(() => {
     const tickets = ticketsCounter >= 2 ? (ticketsCounter >= 5 ? 'ов' : 'а') : ''
@@ -141,10 +144,6 @@ function App() {
         (setResultat('Вы выбрали ' + ticketsCounter + ' билет' + tickets + ' по маршруту: ' + direction.title + ' Cтоимость составляет: ' + priceTickets + 'р. Теплоход отправляется в ' + timeBack.hour + ':' + timeBack.minutes + '  ,  прибудет в ' + timeBackEnd)))
   }, [handleClickEnd])
 
-
-
-
-
   // Фильтр для времени туда и обратно"
   const result = ChooseTimeBack.time.filter(data => {
     return (
@@ -152,21 +151,17 @@ function App() {
     )
   })
 
-
   // Условие включения раздела выбора времени there
   const thereTime = (direction.length === 0 || direction.id === 2) ? true : false
   // Условие включения раздела выбора времени back
   const backTime = (direction.length === 0 || direction.id === 1) ? true : false
   // Условие включения раздела выбора количества билетов
   const tickets = ((direction.id === 3) ? (timeThere.length === 0 || timeBack.length === 0) : (timeThere.length === 0 && timeBack.length === 0)) ? true : false
-  // Условие включения кнопки "Посчитать"
-  const buttonEnd = (direction.length === 0 || ((ticketsCounterAdult === 0) && (ticketsCounterPreferential === 0) && (ticketsCounterСhild === 0))) ? true : false
   // Условие включения "Сбросить"
   const buttonAgain = (direction.length === 0 && timeThere.length === 0 && timeBack.length === 0) ? true : false
 
   useEffect(() => {
     const data = finalTest === true ? outputResult() : ''
-    setChooseTimeBack((direction.id === 3) ? result : ChooseTimeBack.time)
     // const data1 = finalTest === true ? savedResultat() : ''
   }, [finalTest])
 
@@ -193,7 +188,6 @@ function App() {
               )
             })}
 
-
             {/* выбор времени поездки */}
             <h2 className="element__title">Выберите время</h2>
             <div className="element__containers">
@@ -212,13 +206,13 @@ function App() {
                       time={timeThere}
                       name="timeThere"
                       disabled={thereTime}
-                    />
-                  )
+                    />)
                 })}
               </div>
               <div>
                 <h3>{ChooseTimeBack.title}</h3>
-                {chooseTimeBack.map(data => {
+                {((direction.id === 3) ? result : chooseTimeBack).map(data => {
+                  {/* {  chooseTimeBack.map(data => { */ }
                   return (
                     <InputTime
                       key={data.id}
@@ -231,8 +225,7 @@ function App() {
                       time={timeBack}
                       name="timeBack"
                       disabled={backTime}
-                    />
-                  )
+                    />)
                 })}
               </div>
             </div>
@@ -242,63 +235,48 @@ function App() {
             <InputTicket
               value={valueAdult}
               onChange={handleChangeAdult}
-              price='Взрослый билет, 700P/1200P.'
+              title='Взрослый'
+              priceA='700P'
+              priceB='1200P'
               disabled={tickets}
+              direction={direction}
             />
             <InputTicket
               value={valuePreferential}
               onChange={handleChangePreferential}
-              price='Льготный билет, 600P/1000P.'
+              title='Льготный'
+              priceA='600P'
+              priceB='1000P'
               disabled={tickets}
+              direction={direction}
             />
             <InputTicket
               value={valueСhild}
               onChange={handleChangeСhild}
-              price='Детский билет, 400P/600P.'
+              title='Детский'
+              priceA='400P'
+              priceB='600P'
               disabled={tickets}
+              direction={direction}
             />
 
             {/* кнопки */}
-            <button onClick={handleClickEnd}
-              disabled={buttonEnd}
-            >Посчитать</button>
-            <button onClick={handleClickAgain}
+            <Button
+              onClick={handleClickEnd}
+              disabled={disabledButtonEnd}
+              title='Посчитать'
+            />
+            <Button
+              onClick={handleClickAgain}
               disabled={buttonAgain}
-            >Сбросить</button>
+              title='Сбросить'
+            />
 
             {/* вывод результатов */}
             <div >
               <div className="resultat">{resultat}</div>
             </div>
-
-
           </div>
-
-          {/* <div className="lis-order">
-            <div className="lis-order__id"></div>
-            <div className="lis-order__event-id"></div>
-            <div className="lis-order__event-date"></div>
-            <div className="lis-order__ticket-adult-price"></div>
-            <div className="lis-order__ticket-adult-quantity"></div>
-            <div className="lis-order__ticket-kid-price"></div>
-            <div className="lis-order__ticket-kid-quantity"></div>
-            <div className="lis-order__barcode"></div>
-            <div className="lis-order__	user-id"></div>
-            <div className="lis-order__equal-price"></div>
-            <div className="lis-order__created"></div>
-
-          </div> */}
-
-
-
-
-
-
-
-
-
-
-
 
         </div>
       </div>

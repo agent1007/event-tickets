@@ -1,4 +1,4 @@
-function InputTicket({ onChange, value, price, disabled }) {
+function InputTicket({ onChange, value, priceA, priceB, disabled, direction, title }) {
 
 
     return (
@@ -6,8 +6,8 @@ function InputTicket({ onChange, value, price, disabled }) {
             <input value={value}
                 type="number" name="number"
                 onChange={onChange}
-                min={0} max={10} disabled={disabled}/>
-            <label>{price}</label>
+                min={0} max={10} disabled={disabled} />
+            <label> {title} билет, {(direction.id === 3) ? priceB : priceA}.</label>
         </div>
     );
 }

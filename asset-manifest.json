@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/event-tickets/static/css/main.99d218e3.css",
-    "main.js": "/event-tickets/static/js/main.510e99c3.js",
+    "main.js": "/event-tickets/static/js/main.a1ea24da.js",
     "static/js/787.041b5dca.chunk.js": "/event-tickets/static/js/787.041b5dca.chunk.js",
     "static/media/Inter-Medium.woff?v=3.15": "/event-tickets/static/media/Inter-Medium.eec0ea57721daa33c7a2.woff",
     "static/media/Inter-Black.woff?v=3.15": "/event-tickets/static/media/Inter-Black.7bb6234314ccc72c942a.woff",
@@ -12,11 +12,11 @@
     "static/media/nevatrip_logo.svg": "/event-tickets/static/media/nevatrip_logo.9985c852f542fe866401a5183f5783fd.svg",
     "index.html": "/event-tickets/index.html",
     "main.99d218e3.css.map": "/event-tickets/static/css/main.99d218e3.css.map",
-    "main.510e99c3.js.map": "/event-tickets/static/js/main.510e99c3.js.map",
+    "main.a1ea24da.js.map": "/event-tickets/static/js/main.a1ea24da.js.map",
     "787.041b5dca.chunk.js.map": "/event-tickets/static/js/787.041b5dca.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.99d218e3.css",
-    "static/js/main.510e99c3.js"
+    "static/js/main.a1ea24da.js"
   ]
 }
